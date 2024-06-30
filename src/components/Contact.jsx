@@ -9,17 +9,27 @@ import { slideIn } from '../utils/motion'
 const Contact = () => {
 
   const formRef =useRef();
-  const [ form, setForm ] = useState({
-        name:'',
-        email:'',
-        message:'',
+  const [loading,setLoading] = useState(false);
+  
+  const handleSubmit= (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  });
-  const [loading, setLoading] = useState(false);
+    emailjs
+    .sendForm('service_96b50mg', 'template_o7k8wg3', formRef.current,'j5lxyQK3Pt3mDexe0')
+      .then(
+        () => {
+          setLoading(false);
+          alert('Thank you. I will get back to you soon as possible');
+        },
+        (error) => {
+          setLoading(false)
+          console.log('FAILED...', error.text);
+          alert('Something went wrong.');
+        },
+      );
 
-  const handleChange= (e) => {}
-
-  const handleSubmit= (e) => {}
+  }
 
 
   return (
@@ -42,9 +52,7 @@ const Contact = () => {
            </span>
            <input 
            type='text'
-           name='name'
-           value={form.name}
-           onChange={handleChange}
+           name='user_name'
            placeholder="Name"
            className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded outline-none border-none font-medium'
            />
@@ -56,9 +64,7 @@ const Contact = () => {
      </span>
     <input 
     type='email'
-    name='email'
-    value={form.email}
-    onChange={handleChange}
+    name='user_email'
     placeholder="Email"
     className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded outline-none border-none font-medium'
     />
@@ -70,9 +76,7 @@ const Contact = () => {
     </span>
     <textarea
     rows='7'
-    name='Message'
-    value={form.message}
-    onChange={handleChange}
+    name='message'
     placeholder="Write your Message"
     className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded outline-none border-none font-medium'
     />
